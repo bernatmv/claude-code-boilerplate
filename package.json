@@ -1,0 +1,20 @@
+{
+  "name": "claude-code-boilerplate",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=22.0.0 <23.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "lint": "echo \"no lint configured yet\" && exit 1",
+    "typecheck": "echo \"no typecheck configured yet\" && exit 1",
+    "format": "echo \"no format configured yet\" && exit 1",
+    "format:check": "echo \"no format configured yet\" && exit 1"
+  }
+}
