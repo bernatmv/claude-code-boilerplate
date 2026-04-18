@@ -1,10 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [
-    "**/.env.*local",
-    "tsconfig.json",
-    ".nvmrc"
-  ],
+  "globalDependencies": ["**/.env.*local", "tsconfig.json", ".nvmrc"],
   "ui": "stream",
   "tasks": {
     "build": {

@@ -1,0 +1,25 @@
+# deps
+node_modules/
+
+# build outputs
+dist/
+build/
+.next/
+out/
+.expo/
+
+# turbo
+.turbo/
+
+# lock
+pnpm-lock.yaml
+
+# generated
+coverage/
+*.tsbuildinfo
+
+# binary / images
+*.png
+*.jpg
+*.ico
+*.svg

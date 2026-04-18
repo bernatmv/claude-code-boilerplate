@@ -15,6 +15,7 @@ In any package, create `tsconfig.json`:
 ```
 
 Future variants (planned in later phases):
+
 - `nextjs.json` — Next.js-specific overrides (Phase 4)
 - `react-native.json` — React Native / Expo overrides (Phase 5)
 - `node.json` — Node.js package overrides (Phase 3)

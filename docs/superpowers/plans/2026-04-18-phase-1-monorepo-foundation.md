@@ -65,6 +65,7 @@ If any assumption fails, stop and resolve before proceeding.
 ## Task 1: Root workspace skeleton
 
 **Files:**
+
 - Create: `.nvmrc`
 - Create: `.editorconfig`
 - Create: `.gitattributes`
@@ -75,6 +76,7 @@ If any assumption fails, stop and resolve before proceeding.
 - [ ] **Step 1.1: Verify tooling versions**
 
 Run:
+
 ```bash
 node --version
 pnpm --version
@@ -82,6 +84,7 @@ git --version
 ```
 
 Expected:
+
 - Node: `v22.x.x`
 - pnpm: `9.x.x` (or `10.x.x`)
 - git: any reasonably recent version
@@ -91,6 +94,7 @@ If Node is not 22.x, run `nvm install 22 && nvm use 22`. If pnpm is missing, `np
 - [ ] **Step 1.2: Create `.nvmrc`**
 
 Create `.nvmrc`:
+
 ```
 22
 ```
@@ -98,6 +102,7 @@ Create `.nvmrc`:
 - [ ] **Step 1.3: Create `.editorconfig`**
 
 Create `.editorconfig`:
+
 ```ini
 root = true
 
@@ -116,6 +121,7 @@ trim_trailing_whitespace = false
 - [ ] **Step 1.4: Create `.gitattributes`**
 
 Create `.gitattributes`:
+
 ```
 * text=auto eol=lf
 *.sh text eol=lf
@@ -128,6 +134,7 @@ Create `.gitattributes`:
 - [ ] **Step 1.5: Create `.gitignore`**
 
 Create `.gitignore`:
+
 ```
 # deps
 node_modules/
@@ -177,6 +184,7 @@ Thumbs.db
 - [ ] **Step 1.6: Create `package.json`**
 
 Create `package.json`:
+
 ```json
 {
   "name": "claude-code-boilerplate",
@@ -187,10 +195,7 @@ Create `package.json`:
     "node": ">=22.0.0 <23.0.0",
     "pnpm": ">=9.0.0"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": ["apps/*", "packages/*"],
   "scripts": {
     "lint": "echo \"no lint configured yet\" && exit 1",
     "typecheck": "echo \"no typecheck configured yet\" && exit 1",
@@ -205,6 +210,7 @@ Note: The script stubs exit with code 1 on purpose so we can prove they fail now
 - [ ] **Step 1.7: Create `pnpm-workspace.yaml`**
 
 Create `pnpm-workspace.yaml`:
+
 ```yaml
 packages:
   - "apps/*"
@@ -214,6 +220,7 @@ packages:
 - [ ] **Step 1.8: Verify install works**
 
 Run:
+
 ```bash
 pnpm install
 ```
@@ -223,6 +230,7 @@ Expected: creates `pnpm-lock.yaml`, exits 0, reports "Done in ..." with no warni
 - [ ] **Step 1.9: Verify lint/typecheck stubs fail (proves scripts run)**
 
 Run:
+
 ```bash
 pnpm lint
 ```
@@ -230,6 +238,7 @@ pnpm lint
 Expected: exits non-zero with output `no lint configured yet`.
 
 Run:
+
 ```bash
 pnpm typecheck
 ```
@@ -252,12 +261,14 @@ Expected: commit succeeds (no hooks installed yet so no hook interference).
 ## Task 2: Turborepo pipeline
 
 **Files:**
+
 - Create: `turbo.json`
 - Modify: `package.json` (add `turbo` devDep, update scripts)
 
 - [ ] **Step 2.1: Verify turbo is not yet installed**
 
 Run:
+
 ```bash
 pnpm exec turbo --version
 ```
@@ -267,6 +278,7 @@ Expected: fails with "Command not found" or similar.
 - [ ] **Step 2.2: Install turbo at the root**
 
 Run:
+
 ```bash
 pnpm add -Dw turbo@^2.3.0
 ```
@@ -276,14 +288,11 @@ Expected: adds `turbo` to root `devDependencies`; `pnpm-lock.yaml` updates; no e
 - [ ] **Step 2.3: Create `turbo.json`**
 
 Create `turbo.json`:
+
 ```json
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [
-    "**/.env.*local",
-    "tsconfig.json",
-    ".nvmrc"
-  ],
+  "globalDependencies": ["**/.env.*local", "tsconfig.json", ".nvmrc"],
   "ui": "stream",
   "tasks": {
     "build": {
@@ -313,6 +322,7 @@ Create `turbo.json`:
 - [ ] **Step 2.4: Update root scripts to delegate to turbo**
 
 Modify `package.json` — replace the `"scripts"` object with:
+
 ```json
   "scripts": {
     "build": "turbo run build",
@@ -330,6 +340,7 @@ Modify `package.json` — replace the `"scripts"` object with:
 - [ ] **Step 2.5: Verify turbo runs (with zero tasks)**
 
 Run:
+
 ```bash
 pnpm lint
 ```
@@ -350,6 +361,7 @@ git commit -m "chore: add Turborepo pipeline"
 ## Task 3: Shared TypeScript config package
 
 **Files:**
+
 - Create: `packages/config-typescript/package.json`
 - Create: `packages/config-typescript/base.json`
 - Create: `packages/config-typescript/README.md`
@@ -362,9 +374,7 @@ git commit -m "chore: add Turborepo pipeline"
   "name": "@repo/config-typescript",
   "version": "0.0.0",
   "private": true,
-  "files": [
-    "base.json"
-  ]
+  "files": ["base.json"]
 }
 ```
 
@@ -412,13 +422,14 @@ In any package, create `tsconfig.json`:
 
 \`\`\`json
 {
-  "extends": "@repo/config-typescript/base.json",
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+"extends": "@repo/config-typescript/base.json",
+"include": ["src"],
+"exclude": ["node_modules", "dist"]
 }
 \`\`\`
 
 Future variants (planned in later phases):
+
 - `nextjs.json` — Next.js-specific overrides (Phase 4)
 - `react-native.json` — React Native / Expo overrides (Phase 5)
 - `node.json` — Node.js package overrides (Phase 3)
@@ -429,6 +440,7 @@ Future variants (planned in later phases):
 - [ ] **Step 3.4: Install TypeScript at the root**
 
 Run:
+
 ```bash
 pnpm add -Dw typescript@^5.5.0
 ```
@@ -438,6 +450,7 @@ Expected: adds TypeScript to root devDeps.
 - [ ] **Step 3.5: Add `config-typescript` as a workspace dep at the root**
 
 Run:
+
 ```bash
 pnpm add -Dw @repo/config-typescript@workspace:*
 ```
@@ -460,6 +473,7 @@ Expected: adds `"@repo/config-typescript": "workspace:*"` to root `devDependenci
 - [ ] **Step 3.7: Verify TypeScript can resolve the shared config**
 
 Run:
+
 ```bash
 pnpm exec tsc --showConfig
 ```
@@ -471,6 +485,7 @@ If it errors that `@repo/config-typescript/base.json` isn't resolvable, re-run `
 - [ ] **Step 3.8: Verify typecheck passes on empty tree**
 
 Run:
+
 ```bash
 pnpm exec tsc --noEmit
 ```
@@ -489,6 +504,7 @@ git commit -m "chore: add @repo/config-typescript shared config"
 ## Task 4: Shared ESLint config package
 
 **Files:**
+
 - Create: `packages/config-eslint/package.json`
 - Create: `packages/config-eslint/index.js`
 - Create: `packages/config-eslint/README.md`
@@ -504,9 +520,7 @@ git commit -m "chore: add @repo/config-typescript shared config"
   "private": true,
   "type": "module",
   "main": "index.js",
-  "files": [
-    "index.js"
-  ],
+  "files": ["index.js"],
   "peerDependencies": {
     "eslint": "^9.0.0"
   }
@@ -516,6 +530,7 @@ git commit -m "chore: add @repo/config-typescript shared config"
 - [ ] **Step 4.2: Install ESLint and plugins at the root**
 
 Run:
+
 ```bash
 pnpm add -Dw eslint@^9.16.0 typescript-eslint@^8.18.0 @eslint/js@^9.16.0 eslint-config-prettier@^9.1.0 globals@^15.14.0
 ```
@@ -525,6 +540,7 @@ Expected: all added to root devDeps.
 - [ ] **Step 4.3: Install ESLint + plugins as deps of the config package**
 
 Run:
+
 ```bash
 pnpm --filter @repo/config-eslint add eslint@^9.16.0 typescript-eslint@^8.18.0 @eslint/js@^9.16.0 eslint-config-prettier@^9.1.0 globals@^15.14.0
 ```
@@ -607,16 +623,17 @@ In any package, create `eslint.config.js`:
 import base from "@repo/config-eslint";
 
 export default [
-  ...base,
-  {
-    // package-specific overrides
-  },
+...base,
+{
+// package-specific overrides
+},
 ];
 \`\`\`
 
 In TypeScript projects, ensure a `tsconfig.json` exists (used by `projectService`). Files outside any project (root scripts, fixtures) are linted via the typescript-eslint default-project escape hatch (`allowDefaultProject` patterns).
 
 Future overlays (planned in later phases):
+
 - React + Next.js rules (Phase 4)
 - React Native rules (Phase 5)
 - jsx-a11y (Phase 9)
@@ -625,6 +642,7 @@ Future overlays (planned in later phases):
 - [ ] **Step 4.6: Add `@repo/config-eslint` as a root devDep**
 
 Run:
+
 ```bash
 pnpm add -Dw @repo/config-eslint@workspace:*
 ```
@@ -633,18 +651,14 @@ pnpm add -Dw @repo/config-eslint@workspace:*
 
 The `.mjs` extension forces ESM loading regardless of the root `package.json` `"type"` field. ESLint 9 and `@repo/config-eslint` both use ESM, so this avoids a `Cannot use import statement outside a module` error.
 
-Note on flat-config semantics: an object with *only* `ignores` is a **global ignore**; an object with `files` + `ignores` is a per-matcher ignore. Config files (`*.config.*`) must be globally ignored, otherwise typescript-eslint's `projectService` will error on them not being in any tsconfig.
+Note on flat-config semantics: an object with _only_ `ignores` is a **global ignore**; an object with `files` + `ignores` is a per-matcher ignore. Config files (`*.config.*`) must be globally ignored, otherwise typescript-eslint's `projectService` will error on them not being in any tsconfig.
 
 ```js
 import base from "@repo/config-eslint";
 
 export default [
   {
-    ignores: [
-      "**/*.config.js",
-      "**/*.config.mjs",
-      "**/*.config.cjs",
-    ],
+    ignores: ["**/*.config.js", "**/*.config.mjs", "**/*.config.cjs"],
   },
   ...base,
 ];
@@ -653,6 +667,7 @@ export default [
 - [ ] **Step 4.8: Wire the root `lint` script to actually run ESLint**
 
 Modify `package.json` — change the `lint` script from `"turbo run lint"` to a two-step version that lints root files AND delegates to turbo for workspace packages:
+
 ```json
   "scripts": {
     "build": "turbo run build",
@@ -669,6 +684,7 @@ Modify `package.json` — change the `lint` script from `"turbo run lint"` to a 
 - [ ] **Step 4.9: Write a failing lint fixture (TDD for tooling)**
 
 Create `lint-failure-fixture.ts` at the repo root:
+
 ```ts
 const unusedVariable = 42;
 export {};
@@ -677,11 +693,13 @@ export {};
 - [ ] **Step 4.10: Verify lint catches the violation**
 
 Run:
+
 ```bash
 pnpm lint:root
 ```
 
 Expected: exits non-zero with an error like:
+
 ```
 lint-failure-fixture.ts
   1:7  error  'unusedVariable' is assigned a value but never used  @typescript-eslint/no-unused-vars
@@ -692,6 +710,7 @@ This proves ESLint + typescript-eslint + the shared config all work together.
 - [ ] **Step 4.11: Delete the fixture**
 
 Run:
+
 ```bash
 rm lint-failure-fixture.ts
 ```
@@ -699,6 +718,7 @@ rm lint-failure-fixture.ts
 - [ ] **Step 4.12: Verify lint passes on clean tree**
 
 Run:
+
 ```bash
 pnpm lint:root
 ```
@@ -706,6 +726,7 @@ pnpm lint:root
 Expected: exits 0, no output.
 
 Also run:
+
 ```bash
 pnpm lint
 ```
@@ -724,6 +745,7 @@ git commit -m "chore: add @repo/config-eslint flat config"
 ## Task 5: Prettier
 
 **Files:**
+
 - Create: `.prettierrc.json`
 - Create: `.prettierignore`
 - Modify: `package.json` (install Prettier)
@@ -731,6 +753,7 @@ git commit -m "chore: add @repo/config-eslint flat config"
 - [ ] **Step 5.1: Install Prettier at the root**
 
 Run:
+
 ```bash
 pnpm add -Dw prettier@^3.4.0
 ```
@@ -784,15 +807,17 @@ coverage/
 - [ ] **Step 5.4: Write a failing format fixture**
 
 Create `format-fixture.ts`:
+
 ```ts
-const   x=1;
-const y    =2;
-export{x,y}
+const x = 1;
+const y = 2;
+export { x, y };
 ```
 
 - [ ] **Step 5.5: Verify format:check fails**
 
 Run:
+
 ```bash
 pnpm format:check
 ```
@@ -802,11 +827,13 @@ Expected: exits non-zero, reports `format-fixture.ts` as not formatted.
 - [ ] **Step 5.6: Run format to auto-fix**
 
 Run:
+
 ```bash
 pnpm format
 ```
 
 Expected: exits 0. `format-fixture.ts` is now:
+
 ```ts
 const x = 1;
 const y = 2;
@@ -816,6 +843,7 @@ export { x, y };
 - [ ] **Step 5.7: Verify format:check now passes**
 
 Run:
+
 ```bash
 pnpm format:check
 ```
@@ -831,6 +859,7 @@ rm format-fixture.ts
 - [ ] **Step 5.9: Run Prettier on the whole repo to normalize any existing files**
 
 Run:
+
 ```bash
 pnpm format
 ```
@@ -853,6 +882,7 @@ git commit -am "chore: add Prettier with repo-wide formatting"
 ## Task 6: Husky + lint-staged
 
 **Files:**
+
 - Create: `.husky/pre-commit`
 - Create: `.lintstagedrc.json`
 - Modify: `package.json` (install husky + lint-staged, add `prepare` script)
@@ -860,6 +890,7 @@ git commit -am "chore: add Prettier with repo-wide formatting"
 - [ ] **Step 6.1: Install husky and lint-staged**
 
 Run:
+
 ```bash
 pnpm add -Dw husky@^9.1.0 lint-staged@^15.2.0
 ```
@@ -867,11 +898,13 @@ pnpm add -Dw husky@^9.1.0 lint-staged@^15.2.0
 - [ ] **Step 6.2: Add `prepare` script and initialize husky**
 
 Modify `package.json` — add a `prepare` script in the `scripts` block:
+
 ```json
     "prepare": "husky"
 ```
 
 Then run:
+
 ```bash
 pnpm prepare
 ```
@@ -882,19 +915,15 @@ Expected: creates `.husky/_/` (internal husky directory). No errors.
 
 ```json
 {
-  "*.{ts,tsx,js,jsx,cjs,mjs}": [
-    "prettier --write",
-    "eslint --fix"
-  ],
-  "*.{json,md,yml,yaml,css}": [
-    "prettier --write"
-  ]
+  "*.{ts,tsx,js,jsx,cjs,mjs}": ["prettier --write", "eslint --fix"],
+  "*.{json,md,yml,yaml,css}": ["prettier --write"]
 }
 ```
 
 - [ ] **Step 6.4: Create `.husky/pre-commit`**
 
 Create `.husky/pre-commit`:
+
 ```sh
 pnpm exec lint-staged
 ```
@@ -904,6 +933,7 @@ pnpm exec lint-staged
 - [ ] **Step 6.5: Make the hook executable**
 
 Run:
+
 ```bash
 chmod +x .husky/pre-commit
 ```
@@ -913,12 +943,14 @@ chmod +x .husky/pre-commit
 - [ ] **Step 6.6: Write a failing staged file fixture**
 
 Create `hook-fixture.ts`:
+
 ```ts
-const   bad    =    1;
+const bad = 1;
 export { bad };
 ```
 
 Stage it:
+
 ```bash
 git add hook-fixture.ts
 ```
@@ -926,6 +958,7 @@ git add hook-fixture.ts
 - [ ] **Step 6.7: Attempt to commit — lint-staged should reformat**
 
 Run:
+
 ```bash
 git commit -m "test: hook fixture"
 ```
@@ -933,11 +966,13 @@ git commit -m "test: hook fixture"
 Expected behavior: lint-staged runs, Prettier auto-formats the file, ESLint runs (may pass since the variable is exported), then the commit succeeds with the formatted content.
 
 Verify:
+
 ```bash
 cat hook-fixture.ts
 ```
 
 Expected:
+
 ```ts
 const bad = 1;
 export { bad };
@@ -948,6 +983,7 @@ If instead the commit fails because ESLint errors are unfixable, that's also a v
 - [ ] **Step 6.8: Clean up the fixture**
 
 Run:
+
 ```bash
 git rm hook-fixture.ts
 git commit -m "test: remove hook fixture"
@@ -956,11 +992,13 @@ git commit -m "test: remove hook fixture"
 - [ ] **Step 6.9: Commit the hook infrastructure**
 
 First, verify the Husky infra files are staged:
+
 ```bash
 git status
 ```
 
 You should see `.husky/pre-commit`, `.lintstagedrc.json`, and `package.json` changes. Commit:
+
 ```bash
 git add .husky/pre-commit .lintstagedrc.json package.json pnpm-lock.yaml
 git commit -m "chore: add Husky pre-commit with lint-staged"
@@ -975,6 +1013,7 @@ If Task 6 produced multiple commits (including the hook-fixture test/remove comm
 ## Task 7: Commitlint with Conventional Commits
 
 **Files:**
+
 - Create: `commitlint.config.mjs` (ESM — commitlint 19 requires it, and the `.mjs` extension avoids needing `"type": "module"` in root `package.json`)
 - Create: `.husky/commit-msg`
 - Modify: `package.json` (install commitlint)
@@ -982,6 +1021,7 @@ If Task 6 produced multiple commits (including the hook-fixture test/remove comm
 - [ ] **Step 7.1: Install commitlint**
 
 Run:
+
 ```bash
 pnpm add -Dw @commitlint/cli@^19.6.0 @commitlint/config-conventional@^19.6.0
 ```
@@ -1023,6 +1063,7 @@ pnpm exec commitlint --edit "$1"
 ```
 
 Make executable:
+
 ```bash
 chmod +x .husky/commit-msg
 ```
@@ -1030,17 +1071,20 @@ chmod +x .husky/commit-msg
 - [ ] **Step 7.4: Write a failing commit-message test**
 
 Stage a trivial change first (so there's something to commit):
+
 ```bash
 echo "# scratch" > scratch-commit-test.md
 git add scratch-commit-test.md
 ```
 
 Attempt a non-Conventional commit:
+
 ```bash
 git commit -m "this is not conventional"
 ```
 
 Expected: commit is rejected by the `commit-msg` hook with commitlint errors like:
+
 ```
 ✖ subject may not be empty [subject-empty]
 ✖ type may not be empty [type-empty]
@@ -1079,6 +1123,7 @@ git commit -m "chore: add commitlint with Conventional Commits"
 - [ ] **Step 8.1: Clean slate re-install**
 
 Run:
+
 ```bash
 rm -rf node_modules packages/*/node_modules
 pnpm install
@@ -1093,21 +1138,25 @@ Run each of the following in order. Each must exit 0:
 ```bash
 pnpm lint
 ```
+
 Expected: exits 0 (turbo runs; no workspace tasks; root ESLint clean).
 
 ```bash
 pnpm typecheck
 ```
+
 Expected: exits 0 (tsc passes; turbo runs; no workspace tasks).
 
 ```bash
 pnpm format:check
 ```
+
 Expected: exits 0, reports "All matched files use Prettier code style!"
 
 - [ ] **Step 8.3: Verify commit-msg hook still blocks bad messages**
 
 Run:
+
 ```bash
 echo "# gate" > gate-test.md
 git add gate-test.md
@@ -1117,6 +1166,7 @@ git commit -m "not conventional"
 Expected: commit rejected by commitlint.
 
 Clean up:
+
 ```bash
 git restore --staged gate-test.md
 rm gate-test.md
@@ -1125,6 +1175,7 @@ rm gate-test.md
 - [ ] **Step 8.4: Verify commit-msg hook accepts a Conventional message**
 
 Nothing to commit, so verify via commitlint directly:
+
 ```bash
 echo "chore: gate verification" | pnpm exec commitlint
 ```
@@ -1134,12 +1185,14 @@ Expected: exits 0 silently.
 - [ ] **Step 8.5: Final sanity check**
 
 Run:
+
 ```bash
 git status
 git log --oneline -15
 ```
 
 Expected:
+
 - Working tree clean.
 - Commits from this phase present in order: workspace scaffold → turbo → config-typescript → config-eslint → Prettier → husky/lint-staged → commitlint.
 

@@ -45,37 +45,37 @@ Create a single monorepo template that shortens the time-to-first-feature for ne
 
 ## 2. Tech stack
 
-| Concern | Choice |
-|---|---|
-| Monorepo | pnpm workspaces + Turborepo |
-| Web framework | Next.js 15 (App Router) + React + TypeScript |
-| Web styling | Tailwind CSS + shadcn/ui |
-| Mobile framework | Expo (SDK 52+) + Expo Router + React Native |
-| Mobile styling | NativeWind + React Native Reusables |
-| Backend | Supabase (Postgres, Auth, Storage, Edge Functions) |
-| Auth | Supabase email/password + Google SSO (PKCE on web; native ID-token exchange on mobile) |
-| Data fetching | TanStack Query (React Query), wrapping `@supabase/supabase-js` |
-| Forms | React Hook Form + Zod resolver |
-| Validation | Zod (shared client + server + tests) |
-| i18n | `next-intl` (web) + `i18next` / `react-i18next` (mobile); shared JSON strings |
-| Analytics | PostHog + Google Analytics 4 (no consent banner in v1; consent-ready API surface) |
-| Push | Expo Notifications + Supabase Edge Function dispatcher (Expo Push API) |
-| Icons | `lucide-react` (web) + `lucide-react-native` (mobile) |
-| Dates | `date-fns` |
-| Animation | Framer Motion (web); Reanimated 3 + Moti (mobile) |
-| Unit tests | Vitest |
-| Web E2E | Playwright (+ `@axe-core/playwright` for a11y) |
-| Mobile E2E | Maestro |
-| API mocking | MSW (shared handlers) |
-| Linting | ESLint (flat config) + `eslint-plugin-jsx-a11y` |
-| Formatting | Prettier |
-| Git hooks | Husky + lint-staged + commitlint (Conventional Commits) |
-| CI | GitHub Actions (Linux runners primarily; macOS gated behind label) |
-| Web deploy | Vercel (GitHub App, preview-per-PR) |
-| Mobile deploy | EAS Build + EAS Submit |
-| Env validation | `@t3-oss/env-nextjs` (web) + custom Zod loader (mobile) |
-| Node version | Pinned via `.nvmrc` |
-| Package manager | pnpm, pinned via `packageManager` field |
+| Concern          | Choice                                                                                 |
+| ---------------- | -------------------------------------------------------------------------------------- |
+| Monorepo         | pnpm workspaces + Turborepo                                                            |
+| Web framework    | Next.js 15 (App Router) + React + TypeScript                                           |
+| Web styling      | Tailwind CSS + shadcn/ui                                                               |
+| Mobile framework | Expo (SDK 52+) + Expo Router + React Native                                            |
+| Mobile styling   | NativeWind + React Native Reusables                                                    |
+| Backend          | Supabase (Postgres, Auth, Storage, Edge Functions)                                     |
+| Auth             | Supabase email/password + Google SSO (PKCE on web; native ID-token exchange on mobile) |
+| Data fetching    | TanStack Query (React Query), wrapping `@supabase/supabase-js`                         |
+| Forms            | React Hook Form + Zod resolver                                                         |
+| Validation       | Zod (shared client + server + tests)                                                   |
+| i18n             | `next-intl` (web) + `i18next` / `react-i18next` (mobile); shared JSON strings          |
+| Analytics        | PostHog + Google Analytics 4 (no consent banner in v1; consent-ready API surface)      |
+| Push             | Expo Notifications + Supabase Edge Function dispatcher (Expo Push API)                 |
+| Icons            | `lucide-react` (web) + `lucide-react-native` (mobile)                                  |
+| Dates            | `date-fns`                                                                             |
+| Animation        | Framer Motion (web); Reanimated 3 + Moti (mobile)                                      |
+| Unit tests       | Vitest                                                                                 |
+| Web E2E          | Playwright (+ `@axe-core/playwright` for a11y)                                         |
+| Mobile E2E       | Maestro                                                                                |
+| API mocking      | MSW (shared handlers)                                                                  |
+| Linting          | ESLint (flat config) + `eslint-plugin-jsx-a11y`                                        |
+| Formatting       | Prettier                                                                               |
+| Git hooks        | Husky + lint-staged + commitlint (Conventional Commits)                                |
+| CI               | GitHub Actions (Linux runners primarily; macOS gated behind label)                     |
+| Web deploy       | Vercel (GitHub App, preview-per-PR)                                                    |
+| Mobile deploy    | EAS Build + EAS Submit                                                                 |
+| Env validation   | `@t3-oss/env-nextjs` (web) + custom Zod loader (mobile)                                |
+| Node version     | Pinned via `.nvmrc`                                                                    |
+| Package manager  | pnpm, pinned via `packageManager` field                                                |
 
 ---
 
@@ -153,6 +153,7 @@ claude-code-boilerplate/
 **Shared.** A `useSession()` hook in `packages/api-client` is the single source of truth for the current user. Auth-related strings live in `packages/i18n/locales/*/auth.json`.
 
 **External setup required (documented in `docs/auth.md`):**
+
 - Google Cloud Console: OAuth client IDs for Web, iOS, Android.
 - Supabase Dashboard: Google provider enabled with the Web client ID + secret; authorized redirect URIs.
 
@@ -283,12 +284,12 @@ All demo surface exists to prove features work and serve as reference for new ap
 
 ### 7.1 GitHub Actions workflows
 
-| Workflow | Trigger | Jobs | Runner | Expected time |
-|---|---|---|---|---|
-| `ci.yml` | PR opened/updated | lint, typecheck, unit, web-build, web-e2e (against Vercel preview URL) | ubuntu-latest | 6–10 min |
-| (Vercel preview) | PR opened | Vercel preview deploy via GitHub App | — (no Actions minutes) | — |
-| `mobile-e2e.yml` | PR with label `mobile-e2e` | EAS preview build fetch + Maestro iOS + Maestro Android | macos-latest (iOS), ubuntu-latest (Android) | 20–30 min |
-| `release.yml` | Tag `v*` on `main` | Vercel prod promote + `eas submit` iOS/Android + GitHub release with changelog | ubuntu-latest | 10–15 min |
+| Workflow         | Trigger                    | Jobs                                                                           | Runner                                      | Expected time |
+| ---------------- | -------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------- | ------------- |
+| `ci.yml`         | PR opened/updated          | lint, typecheck, unit, web-build, web-e2e (against Vercel preview URL)         | ubuntu-latest                               | 6–10 min      |
+| (Vercel preview) | PR opened                  | Vercel preview deploy via GitHub App                                           | — (no Actions minutes)                      | —             |
+| `mobile-e2e.yml` | PR with label `mobile-e2e` | EAS preview build fetch + Maestro iOS + Maestro Android                        | macos-latest (iOS), ubuntu-latest (Android) | 20–30 min     |
+| `release.yml`    | Tag `v*` on `main`         | Vercel prod promote + `eas submit` iOS/Android + GitHub release with changelog | ubuntu-latest                               | 10–15 min     |
 
 - Turbo cache via `actions/cache` keyed on `pnpm-lock.yaml` + code hash.
 - `pnpm install --frozen-lockfile`.
