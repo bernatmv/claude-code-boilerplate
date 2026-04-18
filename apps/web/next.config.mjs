@@ -15,6 +15,7 @@ const nextConfig = {
     "@repo/i18n",
     "@repo/tailwind-config",
     "@repo/validation",
+    "next-mdx-remote",
   ],
 };
 
