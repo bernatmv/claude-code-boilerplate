@@ -11,7 +11,17 @@ const config: ExpoConfig = {
   experiments: {
     typedRoutes: true,
   },
-  plugins: ["expo-router", "expo-localization"],
+  plugins: [
+    "expo-router",
+    "expo-localization",
+    [
+      "expo-notifications",
+      {
+        icon: "./assets/notification-icon.png",
+        color: "#ffffff",
+      },
+    ],
+  ],
   ios: {
     supportsTablet: true,
     bundleIdentifier: "com.example.boilerplate",

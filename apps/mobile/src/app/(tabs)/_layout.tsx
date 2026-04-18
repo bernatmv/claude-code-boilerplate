@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
+import { registerForPushNotifications } from "@/lib/push";
 import { supabase } from "@/lib/supabase";
 
 type SessionState = "loading" | "authenticated" | "unauthenticated";
@@ -13,12 +14,20 @@ export default function TabsLayout() {
 
   useEffect(() => {
     let mounted = true;
+    const bootstrap = (userId: string | null) => {
+      if (!userId) return;
+      void registerForPushNotifications(userId).catch((err: unknown) => {
+        console.warn("push registration failed", err);
+      });
+    };
     void supabase.auth.getSession().then(({ data }) => {
       if (!mounted) return;
       setSession(data.session ? "authenticated" : "unauthenticated");
+      bootstrap(data.session?.user.id ?? null);
     });
     const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
       setSession(s ? "authenticated" : "unauthenticated");
+      bootstrap(s?.user.id ?? null);
     });
     return () => {
       mounted = false;
