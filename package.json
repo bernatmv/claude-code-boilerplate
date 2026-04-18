@@ -23,6 +23,8 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
     "@eslint/js": "^9.16.0",
     "@repo/config-eslint": "workspace:*",
     "@repo/config-typescript": "workspace:*",
