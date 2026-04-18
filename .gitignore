@@ -38,3 +38,6 @@ Thumbs.db
 
 # misc
 *.tsbuildinfo
+
+# husky generated (Task 6 will create .husky/_/)
+.husky/_/

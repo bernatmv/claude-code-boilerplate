@@ -169,6 +169,9 @@ Thumbs.db
 
 # misc
 *.tsbuildinfo
+
+# husky generated (Task 6 will create .husky/_/)
+.husky/_/
 ```
 
 - [ ] **Step 1.6: Create `package.json`**
