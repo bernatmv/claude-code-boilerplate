@@ -1,0 +1,14 @@
+{
+  "generic": "Something went wrong. Please try again.",
+  "network": "Network error. Check your connection.",
+  "auth": {
+    "invalidCredentials": "Invalid email or password.",
+    "emailTaken": "An account with this email already exists.",
+    "weakPassword": "Password must be at least 8 characters."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "invalidEmail": "Please enter a valid email address.",
+    "passwordMismatch": "Passwords do not match."
+  }
+}
