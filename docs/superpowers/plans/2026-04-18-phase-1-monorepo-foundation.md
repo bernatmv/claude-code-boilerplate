@@ -452,18 +452,8 @@ Expected: adds `"@repo/config-typescript": "workspace:*"` to root `devDependenci
   "compilerOptions": {
     "noEmit": true
   },
-  "include": [
-    "*.ts",
-    "*.js",
-    "*.mjs",
-    "*.cjs"
-  ],
-  "exclude": [
-    "node_modules",
-    ".turbo",
-    "dist",
-    "build"
-  ]
+  "files": [],
+  "references": []
 }
 ```
 
