@@ -8,6 +8,9 @@ import { AnalyticsProvider } from "@/components/analytics-provider";
 import { QueryProvider } from "@/components/query-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { i18n } from "@/i18n";
+import { initSentry } from "@/lib/sentry";
+
+initSentry();
 
 export default function RootLayout() {
   return (

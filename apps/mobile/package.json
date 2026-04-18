@@ -15,6 +15,7 @@
   "dependencies": {
     "@react-navigation/native": "^7.0.0",
     "@repo/analytics": "workspace:*",
+    "@sentry/react-native": "^6.0.0",
     "@repo/api-client": "workspace:*",
     "@repo/i18n": "workspace:*",
     "@repo/tailwind-config": "workspace:*",
