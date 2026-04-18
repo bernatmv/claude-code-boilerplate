@@ -9,7 +9,4 @@ export default [
     ],
   },
   ...base,
-  {
-    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.cjs", "**/*.mjs"],
-  },
 ];

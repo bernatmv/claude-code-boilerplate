@@ -580,6 +580,7 @@ export default [
         "error",
         { checksVoidReturn: { attributes: false } },
       ],
+      "@typescript-eslint/no-floating-promises": "error",
       "no-console": ["warn", { allow: ["warn", "error"] }],
     },
   },
@@ -646,9 +647,6 @@ export default [
     ],
   },
   ...base,
-  {
-    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.cjs", "**/*.mjs"],
-  },
 ];
 ```
 

@@ -44,6 +44,7 @@ export default [
         "error",
         { checksVoidReturn: { attributes: false } },
       ],
+      "@typescript-eslint/no-floating-promises": "error",
       "no-console": ["warn", { allow: ["warn", "error"] }],
     },
   },
