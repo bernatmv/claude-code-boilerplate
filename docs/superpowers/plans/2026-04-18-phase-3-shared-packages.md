@@ -5,6 +5,7 @@
 **Goal:** Scaffold the five shared workspace packages (`validation`, `i18n`, `tailwind-config`, `analytics`, `api-client`) with real implementations, barrel exports, and at least one passing unit test each — so downstream apps can import them in later phases.
 
 **Architecture:**
+
 - Each package is a private `@repo/*` workspace package under `packages/` with its own `package.json`, `tsconfig.json`, `vitest.config.ts`, and `src/` tree.
 - Tests live inline (`src/**/*.test.ts`) and run via `vitest run`.
 - Lint and typecheck are exercised by the monorepo root (`eslint .` and each package's `tsc --noEmit`). We do NOT add per-package `lint` scripts — that matches the existing `@repo/database-types` pattern.
@@ -94,6 +95,7 @@ Each package is small and single-responsibility. Tests sit next to source. No cr
 ## Task 1: `packages/validation` — Zod schemas
 
 **Files:**
+
 - Create: `packages/validation/package.json`
 - Create: `packages/validation/tsconfig.json`
 - Create: `packages/validation/vitest.config.ts`
@@ -235,13 +237,9 @@ import { createItemSchema, itemSchema, updateItemSchema } from "./item.js";
 describe("createItemSchema", () => {
   it("requires title (1–200 chars) and allows optional description", () => {
     expect(createItemSchema.safeParse({ title: "hello" }).success).toBe(true);
-    expect(
-      createItemSchema.safeParse({ title: "hello", description: "hi" }).success,
-    ).toBe(true);
+    expect(createItemSchema.safeParse({ title: "hello", description: "hi" }).success).toBe(true);
     expect(createItemSchema.safeParse({ title: "" }).success).toBe(false);
-    expect(
-      createItemSchema.safeParse({ title: "x".repeat(201) }).success,
-    ).toBe(false);
+    expect(createItemSchema.safeParse({ title: "x".repeat(201) }).success).toBe(false);
   });
 });
 
@@ -249,9 +247,7 @@ describe("updateItemSchema", () => {
   it("requires at least one field", () => {
     expect(updateItemSchema.safeParse({}).success).toBe(false);
     expect(updateItemSchema.safeParse({ title: "new" }).success).toBe(true);
-    expect(updateItemSchema.safeParse({ description: "new" }).success).toBe(
-      true,
-    );
+    expect(updateItemSchema.safeParse({ description: "new" }).success).toBe(true);
   });
 });
 
@@ -321,15 +317,9 @@ import { resetPasswordSchema, signInSchema, signUpSchema } from "./auth.js";
 
 describe("signInSchema", () => {
   it("requires valid email + password", () => {
-    expect(
-      signInSchema.safeParse({ email: "a@b.co", password: "secret12" }).success,
-    ).toBe(true);
-    expect(
-      signInSchema.safeParse({ email: "nope", password: "secret12" }).success,
-    ).toBe(false);
-    expect(
-      signInSchema.safeParse({ email: "a@b.co", password: "short" }).success,
-    ).toBe(false);
+    expect(signInSchema.safeParse({ email: "a@b.co", password: "secret12" }).success).toBe(true);
+    expect(signInSchema.safeParse({ email: "nope", password: "secret12" }).success).toBe(false);
+    expect(signInSchema.safeParse({ email: "a@b.co", password: "short" }).success).toBe(false);
   });
 });
 
@@ -354,12 +344,8 @@ describe("signUpSchema", () => {
 
 describe("resetPasswordSchema", () => {
   it("accepts a valid email", () => {
-    expect(resetPasswordSchema.safeParse({ email: "a@b.co" }).success).toBe(
-      true,
-    );
-    expect(resetPasswordSchema.safeParse({ email: "nope" }).success).toBe(
-      false,
-    );
+    expect(resetPasswordSchema.safeParse({ email: "a@b.co" }).success).toBe(true);
+    expect(resetPasswordSchema.safeParse({ email: "nope" }).success).toBe(false);
   });
 });
 ```
@@ -412,11 +398,13 @@ export * from "./profile.js";
 - [ ] **Step 1.16: Install deps + run full gate**
 
 Run from monorepo root:
+
 ```
 pnpm install
 pnpm --filter @repo/validation test
 pnpm --filter @repo/validation typecheck
 ```
+
 Expected: all pass.
 
 - [ ] **Step 1.17: Commit**
@@ -431,6 +419,7 @@ git commit -m "feat(validation): add Zod schemas for profile, item, auth"
 ## Task 2: `packages/i18n` — locale JSON + formatters + parity test
 
 **Files:**
+
 - Create: `packages/i18n/package.json`
 - Create: `packages/i18n/tsconfig.json`
 - Create: `packages/i18n/vitest.config.ts`
@@ -494,6 +483,7 @@ export default defineConfig({
 - [ ] **Step 2.4: Create English locale files**
 
 `packages/i18n/locales/en/common.json`:
+
 ```json
 {
   "appName": "Claude Code Boilerplate",
@@ -515,6 +505,7 @@ export default defineConfig({
 ```
 
 `packages/i18n/locales/en/auth.json`:
+
 ```json
 {
   "signIn": {
@@ -541,6 +532,7 @@ export default defineConfig({
 ```
 
 `packages/i18n/locales/en/errors.json`:
+
 ```json
 {
   "generic": "Something went wrong. Please try again.",
@@ -561,6 +553,7 @@ export default defineConfig({
 - [ ] **Step 2.5: Create Spanish locale files (same shape, translated strings)**
 
 `packages/i18n/locales/es/common.json`:
+
 ```json
 {
   "appName": "Claude Code Boilerplate",
@@ -582,6 +575,7 @@ export default defineConfig({
 ```
 
 `packages/i18n/locales/es/auth.json`:
+
 ```json
 {
   "signIn": {
@@ -608,6 +602,7 @@ export default defineConfig({
 ```
 
 `packages/i18n/locales/es/errors.json`:
+
 ```json
 {
   "generic": "Algo salió mal. Inténtalo de nuevo.",
@@ -765,6 +760,7 @@ git commit -m "feat(i18n): add en/es locales, formatters, and parity test"
 ## Task 3: `packages/tailwind-config` — design tokens + Tailwind preset
 
 **Files:**
+
 - Create: `packages/tailwind-config/package.json`
 - Create: `packages/tailwind-config/tsconfig.json`
 - Create: `packages/tailwind-config/vitest.config.ts`
@@ -975,6 +971,7 @@ pnpm install
 pnpm --filter @repo/tailwind-config test
 pnpm --filter @repo/tailwind-config typecheck
 ```
+
 Expected: all pass.
 
 - [ ] **Step 3.9: Commit**
@@ -989,6 +986,7 @@ git commit -m "feat(tailwind-config): add design tokens and Tailwind preset"
 ## Task 4: `packages/analytics` — no-op-safe wrapper
 
 **Files:**
+
 - Create: `packages/analytics/package.json`
 - Create: `packages/analytics/tsconfig.json`
 - Create: `packages/analytics/vitest.config.ts`
@@ -1220,8 +1218,7 @@ function safeInvoke(name: string, fn: () => void) {
 }
 
 export function createAnalytics(config: AnalyticsConfig): Analytics {
-  const providers =
-    config.providers.length === 0 ? [createNoopProvider()] : config.providers;
+  const providers = config.providers.length === 0 ? [createNoopProvider()] : config.providers;
 
   return {
     track(event, props) {
@@ -1284,6 +1281,7 @@ git commit -m "feat(analytics): add no-op-safe analytics wrapper with fan-out"
 ## Task 5: `packages/api-client` — Supabase factory + query keys + MSW handlers
 
 **Files:**
+
 - Create: `packages/api-client/package.json`
 - Create: `packages/api-client/tsconfig.json`
 - Create: `packages/api-client/vitest.config.ts`
@@ -1371,19 +1369,14 @@ import { createSupabaseBrowserClient } from "./client.js";
 
 describe("createSupabaseBrowserClient", () => {
   it("returns a client exposing auth + from APIs", () => {
-    const client = createSupabaseBrowserClient(
-      "https://example.supabase.co",
-      "anon-key",
-    );
+    const client = createSupabaseBrowserClient("https://example.supabase.co", "anon-key");
     expect(typeof client.auth.getSession).toBe("function");
     expect(typeof client.from).toBe("function");
   });
 
   it("throws if url or key is missing", () => {
     expect(() => createSupabaseBrowserClient("", "k")).toThrow();
-    expect(() =>
-      createSupabaseBrowserClient("https://example.supabase.co", ""),
-    ).toThrow();
+    expect(() => createSupabaseBrowserClient("https://example.supabase.co", "")).toThrow();
   });
 });
 ```
@@ -1400,10 +1393,7 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 export type AppSupabaseClient = SupabaseClient<Database>;
 
-export function createSupabaseBrowserClient(
-  url: string,
-  anonKey: string,
-): AppSupabaseClient {
+export function createSupabaseBrowserClient(url: string, anonKey: string): AppSupabaseClient {
   if (!url) throw new Error("SUPABASE_URL is required");
   if (!anonKey) throw new Error("SUPABASE_ANON_KEY is required");
   return createClient<Database>(url, anonKey, {
@@ -1460,6 +1450,7 @@ Run: `pnpm --filter @repo/api-client test`
 - [ ] **Step 5.11: Implement hook scaffolds (not unit-tested this phase)**
 
 `packages/api-client/src/hooks/use-session.ts`:
+
 ```ts
 import { useQuery } from "@tanstack/react-query";
 import type { Session } from "@supabase/supabase-js";
@@ -1480,6 +1471,7 @@ export function useSession(client: AppSupabaseClient) {
 ```
 
 `packages/api-client/src/hooks/use-items.ts`:
+
 ```ts
 import { useQuery } from "@tanstack/react-query";
 
@@ -1490,10 +1482,7 @@ export function useItems(client: AppSupabaseClient, userId: string) {
   return useQuery({
     queryKey: queryKeys.items.list(userId),
     queryFn: async () => {
-      const { data, error } = await client
-        .from("items")
-        .select("*")
-        .eq("user_id", userId);
+      const { data, error } = await client.from("items").select("*").eq("user_id", userId);
       if (error) throw error;
       return data;
     },
@@ -1524,9 +1513,7 @@ afterAll(() => {
 
 describe("itemsListHandler", () => {
   it("returns a JSON array for GET /rest/v1/items", async () => {
-    const res = await fetch(
-      "https://example.supabase.co/rest/v1/items?select=*",
-    );
+    const res = await fetch("https://example.supabase.co/rest/v1/items?select=*");
     expect(res.status).toBe(200);
     const body = (await res.json()) as Array<{ id: string }>;
     expect(Array.isArray(body)).toBe(true);
@@ -1540,19 +1527,17 @@ describe("itemsListHandler", () => {
 ```ts
 import { http, HttpResponse } from "msw";
 
-export const itemsListHandler = http.get(
-  "*/rest/v1/items",
-  () =>
-    HttpResponse.json([
-      {
-        id: "00000000-0000-0000-0000-000000000001",
-        user_id: "00000000-0000-0000-0000-000000000002",
-        title: "Seed item",
-        description: null,
-        created_at: "2026-01-01T00:00:00.000Z",
-        updated_at: "2026-01-01T00:00:00.000Z",
-      },
-    ]),
+export const itemsListHandler = http.get("*/rest/v1/items", () =>
+  HttpResponse.json([
+    {
+      id: "00000000-0000-0000-0000-000000000001",
+      user_id: "00000000-0000-0000-0000-000000000002",
+      title: "Seed item",
+      description: null,
+      created_at: "2026-01-01T00:00:00.000Z",
+      updated_at: "2026-01-01T00:00:00.000Z",
+    },
+  ]),
 );
 
 export const handlers = [itemsListHandler];
@@ -1594,6 +1579,7 @@ pnpm install
 pnpm --filter @repo/api-client typecheck
 pnpm --filter @repo/api-client test
 ```
+
 Expected: all pass. (Note: `useItems` typing may surface a placeholder-type narrowing issue against `Database = Record<string, never>`. If it does, cast inside `useItems` with `client.from("items" as never)` to keep compilation clean — downstream apps regenerate real types.)
 
 - [ ] **Step 5.18: Commit**
@@ -1608,14 +1594,17 @@ git commit -m "feat(api-client): Supabase client factory, query keys, hooks, MSW
 ## Task 6: Phase gate — monorepo-wide lint/typecheck/test/format + tag
 
 **Files:**
+
 - Modify (if drift): `packages/*/package.json` or `tsconfig.json` as surfaced by the gate
 
 - [ ] **Step 6.1: Ensure fresh install at root**
 
 Run from monorepo root:
+
 ```
 pnpm install
 ```
+
 Expected: resolves all new workspace deps, no errors.
 
 - [ ] **Step 6.2: Run the full test suite**
@@ -1649,6 +1638,7 @@ Expected: at least 5 feature commits (one per package) plus the initial plan com
 git tag phase-3-complete
 git tag | grep phase
 ```
+
 Expected: output includes `phase-1-complete`, `phase-2-complete`, `phase-3-complete`.
 
 ---
