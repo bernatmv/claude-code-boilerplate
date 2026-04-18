@@ -41,3 +41,7 @@ Thumbs.db
 
 # husky generated (Task 6 will create .husky/_/)
 .husky/_/
+
+# supabase local (auto-managed; migrations and seed are committed separately)
+supabase/.branches/
+supabase/.temp/
