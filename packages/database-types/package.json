@@ -1,0 +1,17 @@
+{
+  "name": "@repo/database-types",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@repo/config-typescript": "workspace:*",
+    "@supabase/supabase-js": "^2.45.0",
+    "vitest": "^2.1.0"
+  }
+}
