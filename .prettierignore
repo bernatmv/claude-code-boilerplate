@@ -17,6 +17,9 @@ pnpm-lock.yaml
 # generated
 coverage/
 *.tsbuildinfo
+next-env.d.ts
+test-results/
+playwright-report/
 
 # binary / images
 *.png
