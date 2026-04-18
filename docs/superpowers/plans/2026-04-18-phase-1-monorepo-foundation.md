@@ -565,7 +565,9 @@ export default [
         ...globals.browser,
       },
       parserOptions: {
-        projectService: true,
+        projectService: {
+          allowDefaultProject: ["*.ts", "*.tsx", "*.mjs", "*.cjs", "*.js"],
+        },
       },
     },
     rules: {
@@ -611,7 +613,7 @@ export default [
 ];
 \`\`\`
 
-In TypeScript projects, ensure a `tsconfig.json` exists (used by `projectService`).
+In TypeScript projects, ensure a `tsconfig.json` exists (used by `projectService`). Files outside any project (root scripts, fixtures) are linted via the typescript-eslint default-project escape hatch (`allowDefaultProject` patterns).
 
 Future overlays (planned in later phases):
 - React + Next.js rules (Phase 4)
