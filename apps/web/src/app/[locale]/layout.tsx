@@ -6,6 +6,7 @@ import { getMessages } from "next-intl/server";
 
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
+import { QueryProvider } from "@/components/query-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { site } from "@/lib/site";
 
@@ -36,18 +37,20 @@ export default async function LocaleLayout({
     <html lang={typedLocale} suppressHydrationWarning>
       <body>
         <NextIntlClientProvider locale={typedLocale} messages={messages}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <div className="flex min-h-screen flex-col">
-              <Navbar locale={typedLocale} />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
-          </ThemeProvider>
+          <QueryProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <div className="flex min-h-screen flex-col">
+                <Navbar locale={typedLocale} />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+            </ThemeProvider>
+          </QueryProvider>
         </NextIntlClientProvider>
       </body>
     </html>
