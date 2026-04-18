@@ -10,6 +10,7 @@ export default [
       "**/e2e/**",
       "**/next-env.d.ts",
       "**/.next/**",
+      "supabase/functions/**",
     ],
   },
   ...base,

@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { TestPushButton } from "@/components/test-push-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 export default async function SettingsPage({ params }: { params: Promise<{ locale: Locale }> }) {
@@ -19,6 +20,10 @@ export default async function SettingsPage({ params }: { params: Promise<{ local
         <section className="flex items-center justify-between">
           <span className="text-sm">Theme</span>
           <ThemeToggle />
+        </section>
+        <section className="flex items-center justify-between">
+          <span className="text-sm">Push notifications</span>
+          <TestPushButton />
         </section>
       </div>
       <div className="mt-6">
