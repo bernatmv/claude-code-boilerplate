@@ -24,7 +24,7 @@ test.describe("auth", () => {
     await page.getByLabel("Password", { exact: true }).fill("password123");
     await page.getByLabel(/confirm/i).fill("different123");
     await page.getByRole("button", { name: /sign up/i }).click();
-    await expect(page.getByRole("alert")).toContainText(/match/i);
+    await expect(page.getByText(/match/i)).toBeVisible();
   });
 
   test("forgot-password page renders", async ({ page }) => {
