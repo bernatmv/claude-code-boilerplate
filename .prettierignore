@@ -20,6 +20,10 @@ coverage/
 next-env.d.ts
 test-results/
 playwright-report/
+nativewind-env.d.ts
+expo-env.d.ts
+android/
+ios/
 
 # binary / images
 *.png
