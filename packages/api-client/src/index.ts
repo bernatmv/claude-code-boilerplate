@@ -3,4 +3,5 @@ export type { AppSupabaseClient, StorageAdapter } from "./client.js";
 export { queryKeys } from "./query-keys.js";
 export type { QueryKeys } from "./query-keys.js";
 export { useSession } from "./hooks/use-session.js";
-export { useItems } from "./hooks/use-items.js";
+export { useItems, useCreateItem, useUpdateItem, useDeleteItem } from "./hooks/use-items.js";
+export { useProfile, useUpdateProfile } from "./hooks/use-profile.js";
