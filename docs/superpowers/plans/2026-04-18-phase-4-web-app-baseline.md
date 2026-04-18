@@ -5,6 +5,7 @@
 **Goal:** Stand up `apps/web` as a Next.js 15 App Router application with Tailwind, bilingual routing (en/es), theme switching, a landing page, an MDX article pipeline with two seed articles, SEO endpoints (sitemap, robots, RSS, OG image, `llms.txt`), JSON-LD helpers, and a Playwright smoke test.
 
 **Architecture:**
+
 - Next.js 15 App Router, TypeScript, React 18. Locale segment `app/[locale]/` drives routing. `next-intl` middleware redirects `/` to the best-match locale and persists a `NEXT_LOCALE` cookie.
 - Styling via Tailwind CSS 3, extending `@repo/tailwind-config`'s preset. Theme switching via `next-themes` using `class` strategy on `<html>`.
 - MDX articles live as files under `apps/web/content/articles/{locale}/{slug}.mdx` and are read at build/runtime via `fs` + `gray-matter`. No CMS. `next-mdx-remote/rsc` renders server-side.
@@ -88,6 +89,7 @@ apps/web/
 ## Task 1: Next.js app skeleton + root layout
 
 **Files:**
+
 - Create: `apps/web/package.json`
 - Create: `apps/web/tsconfig.json`
 - Create: `apps/web/next.config.mjs`
@@ -174,12 +176,7 @@ apps/web/
       "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
+  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules", ".next", "e2e"]
 }
 ```
@@ -228,10 +225,7 @@ import preset from "@repo/tailwind-config/preset";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    "./src/**/*.{ts,tsx,mdx}",
-    "./content/**/*.{md,mdx}",
-  ],
+  content: ["./src/**/*.{ts,tsx,mdx}", "./content/**/*.{md,mdx}"],
   darkMode: "class",
   presets: [preset],
   theme: {
@@ -280,7 +274,9 @@ export default config;
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
   }
 }
 ```
@@ -319,8 +315,7 @@ export function cn(...inputs: ClassValue[]): string {
 ```ts
 export const site = {
   name: "Claude Code Boilerplate",
-  description:
-    "A full-stack web + mobile boilerplate with Supabase, Next.js, and Expo.",
+  description: "A full-stack web + mobile boilerplate with Supabase, Next.js, and Expo.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   author: {
     name: "Claude Code Boilerplate",
@@ -363,11 +358,7 @@ export type Locale = (typeof site.locales)[number];
 ```tsx
 import "../styles/globals.css";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return children;
 }
 ```
@@ -391,6 +382,7 @@ git commit -m "feat(web): Next.js 15 app skeleton with Tailwind + shared configs
 ## Task 2: Reference shadcn primitive — `Button`
 
 **Files:**
+
 - Create: `apps/web/src/components/ui/button.tsx`
 
 - [ ] **Step 2.1: Create `apps/web/src/components/ui/button.tsx`**
@@ -429,11 +421,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "default", size = "md", asChild, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return (
-      <Comp
-        ref={ref}
-        className={cn(base, variants[variant], sizes[size], className)}
-        {...props}
-      />
+      <Comp ref={ref} className={cn(base, variants[variant], sizes[size], className)} {...props} />
     );
   },
 );
@@ -443,6 +431,7 @@ Button.displayName = "Button";
 - [ ] **Step 2.2: Add `@radix-ui/react-slot` to `apps/web/package.json` dependencies**
 
 Edit the `dependencies` block to add:
+
 ```json
 "@radix-ui/react-slot": "^1.1.0",
 ```
@@ -464,6 +453,7 @@ git commit -m "feat(web): add Button component (shadcn reference primitive)"
 ## Task 3: i18n middleware + `[locale]` layout
 
 **Files:**
+
 - Create: `apps/web/src/i18n.ts`
 - Create: `apps/web/src/navigation.ts`
 - Create: `apps/web/src/middleware.ts`
@@ -512,8 +502,7 @@ export const routing = defineRouting({
   localePrefix: "always",
 });
 
-export const { Link, redirect, usePathname, useRouter, getPathname } =
-  createNavigation(routing);
+export const { Link, redirect, usePathname, useRouter, getPathname } = createNavigation(routing);
 ```
 
 - [ ] **Step 3.3: Create `apps/web/src/middleware.ts`**
@@ -662,6 +651,7 @@ Skip for now; this task compiles only after Task 5 adds Navbar/Footer/ThemeProvi
 ## Task 4: Theme provider + toggle
 
 **Files:**
+
 - Create: `apps/web/src/components/theme-provider.tsx`
 - Create: `apps/web/src/components/theme-toggle.tsx`
 
@@ -697,12 +687,7 @@ export function ThemeToggle() {
   const next = resolvedTheme === "dark" ? "light" : "dark";
 
   return (
-    <Button
-      variant="ghost"
-      size="sm"
-      aria-label="Toggle theme"
-      onClick={() => setTheme(next)}
-    >
+    <Button variant="ghost" size="sm" aria-label="Toggle theme" onClick={() => setTheme(next)}>
       {mounted && resolvedTheme === "dark" ? (
         <Sun className="h-4 w-4" />
       ) : (
@@ -718,6 +703,7 @@ export function ThemeToggle() {
 ## Task 5: Layout shell — Navbar, Footer, LocaleSwitcher
 
 **Files:**
+
 - Create: `apps/web/src/components/locale-switcher.tsx`
 - Create: `apps/web/src/components/navbar.tsx`
 - Create: `apps/web/src/components/footer.tsx`
@@ -779,10 +765,7 @@ export async function Navbar({ locale }: { locale: Locale }) {
           {t("appName")}
         </Link>
         <nav className="flex items-center gap-2">
-          <Link
-            href="/articles"
-            className="px-3 py-1 text-sm hover:text-foreground/80"
-          >
+          <Link href="/articles" className="px-3 py-1 text-sm hover:text-foreground/80">
             {t("nav.home")}
           </Link>
           <LocaleSwitcher current={locale} />
@@ -803,12 +786,10 @@ export function Footer() {
   return (
     <footer className="border-t border-border">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 text-sm text-muted-foreground">
-        <span>© {new Date().getFullYear()} {site.name}</span>
-        <a
-          href={site.author.url}
-          rel="noreferrer"
-          className="hover:text-foreground"
-        >
+        <span>
+          © {new Date().getFullYear()} {site.name}
+        </span>
+        <a href={site.author.url} rel="noreferrer" className="hover:text-foreground">
           {site.author.name}
         </a>
       </div>
@@ -841,6 +822,7 @@ git commit -m "feat(web): locale routing, theme provider, navbar and footer"
 ## Task 6: JSON-LD helpers + `site.ts` consumers
 
 **Files:**
+
 - Create: `apps/web/src/lib/jsonld.ts`
 
 - [ ] **Step 6.1: Create `apps/web/src/lib/jsonld.ts`**
@@ -914,6 +896,7 @@ git commit -m "feat(web): JSON-LD helpers (organization, website, article)"
 ## Task 7: MDX articles — loader + seed content + index + detail routes
 
 **Files:**
+
 - Create: `apps/web/content/articles/en/welcome.mdx`
 - Create: `apps/web/content/articles/en/ship-fast.mdx`
 - Create: `apps/web/content/articles/es/welcome.mdx`
@@ -1051,15 +1034,9 @@ export async function listArticles(locale: string): Promise<ArticleSummary[]> {
   return out.sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 }
 
-export async function getArticle(
-  locale: string,
-  slug: string,
-): Promise<Article | null> {
+export async function getArticle(locale: string, slug: string): Promise<Article | null> {
   try {
-    const raw = await readFile(
-      path.join(CONTENT_ROOT, locale, `${slug}.mdx`),
-      "utf8",
-    );
+    const raw = await readFile(path.join(CONTENT_ROOT, locale, `${slug}.mdx`), "utf8");
     const { data, content } = parse(raw);
     return { slug, locale, content, ...data };
   } catch {
@@ -1080,11 +1057,7 @@ export const metadata: Metadata = {
   title: "Articles",
 };
 
-export default async function ArticlesIndex({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function ArticlesIndex({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const articles = await listArticles(locale);
   return (
@@ -1097,13 +1070,9 @@ export default async function ArticlesIndex({
               href={`/articles/${a.slug}`}
               className="group block rounded-lg border border-border p-4 transition-colors hover:bg-muted"
             >
-              <h2 className="text-xl font-semibold group-hover:underline">
-                {a.title}
-              </h2>
+              <h2 className="text-xl font-semibold group-hover:underline">{a.title}</h2>
               <p className="mt-1 text-muted-foreground">{a.description}</p>
-              <time className="mt-2 block text-xs text-muted-foreground">
-                {a.publishedAt}
-              </time>
+              <time className="mt-2 block text-xs text-muted-foreground">{a.publishedAt}</time>
             </Link>
           </li>
         ))}
@@ -1180,9 +1149,7 @@ export default async function ArticleDetail({
       <header>
         <h1>{article.title}</h1>
         <p className="lead">{article.description}</p>
-        <time className="block text-sm text-muted-foreground">
-          {article.publishedAt}
-        </time>
+        <time className="block text-sm text-muted-foreground">{article.publishedAt}</time>
       </header>
       <MDXRemote source={article.content} />
     </article>
@@ -1203,6 +1170,7 @@ git commit -m "feat(web): MDX article pipeline with en/es seed articles"
 ## Task 8: SEO endpoints — robots, sitemap, llms.txt, RSS, OG image
 
 **Files:**
+
 - Create: `apps/web/src/app/robots.ts`
 - Create: `apps/web/src/app/sitemap.ts`
 - Create: `apps/web/src/app/llms.txt/route.ts`
@@ -1267,20 +1235,11 @@ import { listArticles } from "@/lib/articles";
 import { site } from "@/lib/site";
 
 export async function GET() {
-  const lines: string[] = [
-    `# ${site.name}`,
-    "",
-    site.description,
-    "",
-    "## Articles",
-    "",
-  ];
+  const lines: string[] = [`# ${site.name}`, "", site.description, "", "## Articles", ""];
   for (const locale of site.locales) {
     const articles = await listArticles(locale);
     for (const a of articles) {
-      lines.push(
-        `- [${a.title}](${site.url}/${locale}/articles/${a.slug}): ${a.description}`,
-      );
+      lines.push(`- [${a.title}](${site.url}/${locale}/articles/${a.slug}): ${a.description}`);
     }
   }
   return new Response(lines.join("\n") + "\n", {
@@ -1299,12 +1258,7 @@ import { listArticles } from "@/lib/articles";
 import { site } from "@/lib/site";
 
 export async function GET() {
-  const chunks: string[] = [
-    `# ${site.name}`,
-    "",
-    site.description,
-    "",
-  ];
+  const chunks: string[] = [`# ${site.name}`, "", site.description, ""];
   for (const locale of site.locales) {
     const articles = await listArticles(locale);
     for (const a of articles) {
@@ -1312,9 +1266,7 @@ export async function GET() {
         path.join(process.cwd(), "content", "articles", locale, `${a.slug}.mdx`),
         "utf8",
       );
-      chunks.push(
-        `\n---\n\n# ${a.title} (${locale})\n\n> ${a.description}\n\n${raw}\n`,
-      );
+      chunks.push(`\n---\n\n# ${a.title} (${locale})\n\n> ${a.description}\n\n${raw}\n`);
     }
   }
   return new Response(chunks.join("\n"), {
@@ -1385,29 +1337,27 @@ export const contentType = "image/png";
 
 export default function OpenGraphImage() {
   return new ImageResponse(
-    (
-      <div
-        style={{
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%)",
-          color: "white",
-          fontSize: 72,
-          fontWeight: 700,
-          padding: "80px",
-          textAlign: "center",
-        }}
-      >
-        <div>{site.name}</div>
-        <div style={{ fontSize: 28, marginTop: 32, fontWeight: 400, opacity: 0.85 }}>
-          {site.description}
-        </div>
+    <div
+      style={{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%)",
+        color: "white",
+        fontSize: 72,
+        fontWeight: 700,
+        padding: "80px",
+        textAlign: "center",
+      }}
+    >
+      <div>{site.name}</div>
+      <div style={{ fontSize: 28, marginTop: 32, fontWeight: 400, opacity: 0.85 }}>
+        {site.description}
       </div>
-    ),
+    </div>,
     size,
   );
 }
@@ -1428,6 +1378,7 @@ git commit -m "feat(web): SEO endpoints — robots, sitemap, llms.txt, RSS, OG i
 ## Task 9: Playwright smoke test
 
 **Files:**
+
 - Create: `apps/web/playwright.config.ts`
 - Create: `apps/web/e2e/smoke.spec.ts`
 
@@ -1520,6 +1471,7 @@ pnpm typecheck
 pnpm lint
 pnpm format:check
 ```
+
 Expected: all exit 0. `pnpm test` does NOT run Playwright (that is `test:e2e`).
 
 - [ ] **Step 10.2: Build production bundle**
@@ -1533,6 +1485,7 @@ Expected: `.next/` produced, exit 0, no ESLint errors surfaced.
 git log phase-3-complete..HEAD --oneline
 git tag phase-4-complete
 ```
+
 Expected: ≥9 new commits (plan + 8+ feature commits).
 
 ---

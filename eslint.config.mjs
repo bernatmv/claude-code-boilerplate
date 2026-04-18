@@ -8,6 +8,8 @@ export default [
       "**/*.config.cjs",
       "**/*.config.ts",
       "**/e2e/**",
+      "**/next-env.d.ts",
+      "**/.next/**",
     ],
   },
   ...base,
