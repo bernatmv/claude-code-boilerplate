@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 
+import { AnalyticsProvider } from "@/components/analytics-provider";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { QueryProvider } from "@/components/query-provider";
@@ -38,18 +39,20 @@ export default async function LocaleLayout({
       <body>
         <NextIntlClientProvider locale={typedLocale} messages={messages}>
           <QueryProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <div className="flex min-h-screen flex-col">
-                <Navbar locale={typedLocale} />
-                <main className="flex-1">{children}</main>
-                <Footer />
-              </div>
-            </ThemeProvider>
+            <AnalyticsProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <div className="flex min-h-screen flex-col">
+                  <Navbar locale={typedLocale} />
+                  <main className="flex-1">{children}</main>
+                  <Footer />
+                </div>
+              </ThemeProvider>
+            </AnalyticsProvider>
           </QueryProvider>
         </NextIntlClientProvider>
       </body>
