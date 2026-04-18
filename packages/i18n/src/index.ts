@@ -20,4 +20,4 @@ export function getMessages(locale: Locale) {
   return messages[locale];
 }
 
-export * from "./formatters.js";
+export * from "./formatters";
