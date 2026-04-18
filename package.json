@@ -12,9 +12,15 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "echo \"no lint configured yet\" && exit 1",
-    "typecheck": "echo \"no typecheck configured yet\" && exit 1",
-    "format": "echo \"no format configured yet\" && exit 1",
-    "format:check": "echo \"no format configured yet\" && exit 1"
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "dev": "turbo run dev",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\" --ignore-path .prettierignore",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\" --ignore-path .prettierignore"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0"
   }
 }
