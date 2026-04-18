@@ -20,7 +20,11 @@
     "dev": "turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\" --ignore-path .prettierignore",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\" --ignore-path .prettierignore",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:push": "supabase db push",
+    "db:seed": "node --env-file=.env.local scripts/seed.mjs",
+    "db:types": "supabase gen types typescript --linked --schema public > packages/database-types/src/index.ts",
+    "db:types:check": "node scripts/check-db-types.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
