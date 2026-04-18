@@ -21,6 +21,8 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\" --ignore-path .prettierignore"
   },
   "devDependencies": {
-    "turbo": "^2.3.0"
+    "@repo/config-typescript": "workspace:*",
+    "turbo": "^2.3.0",
+    "typescript": "^5.5.0"
   }
 }
