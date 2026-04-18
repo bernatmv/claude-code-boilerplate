@@ -45,3 +45,6 @@ Thumbs.db
 # supabase local (auto-managed; migrations and seed are committed separately)
 supabase/.branches/
 supabase/.temp/
+
+# claude code worktrees
+.claude/worktrees/
