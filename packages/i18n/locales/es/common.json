@@ -1,0 +1,17 @@
+{
+  "appName": "Claude Code Boilerplate",
+  "actions": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear"
+  },
+  "nav": {
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "profile": "Perfil",
+    "settings": "Ajustes",
+    "signOut": "Cerrar sesión"
+  }
+}

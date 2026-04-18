@@ -83,6 +83,15 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@25.6.0)
 
+  packages/i18n:
+    devDependencies:
+      '@repo/config-typescript':
+        specifier: workspace:*
+        version: link:../config-typescript
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@25.6.0)
+
   packages/validation:
     dependencies:
       zod:

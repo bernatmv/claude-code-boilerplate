@@ -1,0 +1,14 @@
+{
+  "generic": "Algo salió mal. Inténtalo de nuevo.",
+  "network": "Error de red. Revisa tu conexión.",
+  "auth": {
+    "invalidCredentials": "Correo o contraseña no válidos.",
+    "emailTaken": "Ya existe una cuenta con este correo.",
+    "weakPassword": "La contraseña debe tener al menos 8 caracteres."
+  },
+  "validation": {
+    "required": "Este campo es obligatorio.",
+    "invalidEmail": "Introduce un correo válido.",
+    "passwordMismatch": "Las contraseñas no coinciden."
+  }
+}
