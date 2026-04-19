@@ -50,7 +50,7 @@
     "@repo/config-typescript": "workspace:*",
     "@types/react": "~18.3.12",
     "tailwindcss": "^3.4.0",
-    "typescript": "^5.5.0",
-    "vitest": "^2.1.0"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.4"
   }
 }

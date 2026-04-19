@@ -13,6 +13,6 @@
   },
   "devDependencies": {
     "@repo/config-typescript": "workspace:*",
-    "vitest": "^2.1.0"
+    "vitest": "^4.1.4"
   }
 }
