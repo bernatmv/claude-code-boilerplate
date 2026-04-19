@@ -7,3 +7,11 @@ export { useItems, useCreateItem, useUpdateItem, useDeleteItem } from "./hooks/u
 export { useProfile, useUpdateProfile } from "./hooks/use-profile.js";
 export { upsertPushToken, removePushToken } from "./hooks/use-push-registration.js";
 export type { PushDevice, Platform } from "./hooks/use-push-registration.js";
+export {
+  uploadAvatar,
+  useUploadAvatar,
+  avatarObjectPath,
+  AVATARS_BUCKET,
+  MAX_AVATAR_BYTES,
+  ALLOWED_AVATAR_TYPES,
+} from "./hooks/use-avatar-upload.js";
