@@ -4,7 +4,10 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { resetPasswordSchema, signInSchema, signUpSchema } from "@repo/validation";
 
+import { sendEmail } from "@/lib/email";
+import { welcomeEmail } from "@/lib/emails/templates";
 import { getAuthRateLimiter, getClientIp } from "@/lib/ratelimit";
+import { site } from "@/lib/site";
 import { createServerClient } from "@/lib/supabase/server";
 
 async function checkAuthRateLimit(): Promise<AuthState | null> {
@@ -54,6 +57,10 @@ export async function signUpAction(_prev: AuthState, formData: FormData): Promis
     password: parsed.data.password,
   });
   if (error) return { error: error.message };
+  void sendEmail({
+    to: parsed.data.email,
+    ...welcomeEmail({ appName: site.name, signInUrl: `${site.url}/sign-in` }),
+  }).catch(() => undefined);
   return { ok: true };
 }
 
