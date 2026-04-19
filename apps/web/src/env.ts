@@ -19,6 +19,7 @@ export const env = createEnv({
     NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1).optional(),
     NEXT_PUBLIC_POSTHOG_HOST: z.string().url().optional(),
     NEXT_PUBLIC_STRIPE_PRICE_ID: z.string().min(1).optional(),
+    NEXT_PUBLIC_FEATURE_FLAGS: z.string().min(1).optional(),
   },
   runtimeEnv: {
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
@@ -35,6 +36,7 @@ export const env = createEnv({
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     NEXT_PUBLIC_STRIPE_PRICE_ID: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
+    NEXT_PUBLIC_FEATURE_FLAGS: process.env.NEXT_PUBLIC_FEATURE_FLAGS,
   },
   skipValidation: process.env.SKIP_ENV_VALIDATION === "true" || process.env.NODE_ENV === "test",
 });
