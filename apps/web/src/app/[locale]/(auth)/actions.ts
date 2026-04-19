@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { resetPasswordSchema, signInSchema, signUpSchema } from "@repo/validation";
 
+import { writeAuditLog } from "@/lib/audit";
 import { sendEmail } from "@/lib/email";
 import { welcomeEmail } from "@/lib/emails/templates";
 import { getAuthRateLimiter, getClientIp } from "@/lib/ratelimit";
@@ -35,8 +36,13 @@ export async function signInAction(_prev: AuthState, formData: FormData): Promis
     return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
   const supabase = await createServerClient();
-  const { error } = await supabase.auth.signInWithPassword(parsed.data);
+  const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) return { error: error.message };
+  void writeAuditLog({
+    userId: data.user?.id,
+    action: "auth.sign_in",
+    ip: getClientIp(await headers()),
+  }).catch(() => undefined);
   redirect("/profile");
 }
 

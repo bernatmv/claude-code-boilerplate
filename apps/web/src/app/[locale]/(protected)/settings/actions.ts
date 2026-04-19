@@ -4,6 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 import type { Database } from "@repo/database-types";
 
+import { writeAuditLog } from "@/lib/audit";
 import { createServerClient } from "@/lib/supabase/server";
 import { env } from "@/env";
 
@@ -83,6 +84,7 @@ export async function deleteAccount(): Promise<{ ok: false; message: string }> {
   const { error } = await admin.auth.admin.deleteUser(user.id);
   if (error) return { ok: false, message: error.message };
 
+  await writeAuditLog({ userId: user.id, action: "account.delete" });
   await supabase.auth.signOut();
   redirect("/");
 }
