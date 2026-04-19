@@ -1,9 +1,18 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { resetPasswordSchema, signInSchema, signUpSchema } from "@repo/validation";
 
+import { getAuthRateLimiter, getClientIp } from "@/lib/ratelimit";
 import { createServerClient } from "@/lib/supabase/server";
+
+async function checkAuthRateLimit(): Promise<AuthState | null> {
+  const ip = getClientIp(await headers());
+  const { success } = await getAuthRateLimiter().limit(`ip:${ip}`);
+  if (!success) return { error: "Too many attempts. Try again in a minute." };
+  return null;
+}
 
 export type AuthState = { ok?: boolean; error?: string } | null;
 
@@ -13,6 +22,8 @@ function fieldErrors(error: unknown): string {
 }
 
 export async function signInAction(_prev: AuthState, formData: FormData): Promise<AuthState> {
+  const limited = await checkAuthRateLimit();
+  if (limited) return limited;
   const parsed = signInSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -27,6 +38,8 @@ export async function signInAction(_prev: AuthState, formData: FormData): Promis
 }
 
 export async function signUpAction(_prev: AuthState, formData: FormData): Promise<AuthState> {
+  const limited = await checkAuthRateLimit();
+  if (limited) return limited;
   const parsed = signUpSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -48,6 +61,8 @@ export async function forgotPasswordAction(
   _prev: AuthState,
   formData: FormData,
 ): Promise<AuthState> {
+  const limited = await checkAuthRateLimit();
+  if (limited) return limited;
   const parsed = resetPasswordSchema.safeParse({
     email: formData.get("email"),
   });
