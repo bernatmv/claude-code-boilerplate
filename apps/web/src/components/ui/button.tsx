@@ -3,7 +3,7 @@ import { forwardRef, type ButtonHTMLAttributes } from "react";
 
 import { cn } from "@/lib/cn";
 
-type Variant = "default" | "ghost" | "outline";
+type Variant = "default" | "ghost" | "outline" | "destructive";
 type Size = "sm" | "md" | "lg";
 
 const base =
@@ -13,6 +13,7 @@ const variants: Record<Variant, string> = {
   default: "bg-brand-600 text-white hover:bg-brand-700",
   ghost: "hover:bg-muted",
   outline: "border border-border hover:bg-muted",
+  destructive: "bg-red-600 text-white hover:bg-red-700",
 };
 
 const sizes: Record<Size, string> = {
