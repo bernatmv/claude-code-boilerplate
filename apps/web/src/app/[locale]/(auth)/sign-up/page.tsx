@@ -3,7 +3,8 @@ import { getTranslations } from "next-intl/server";
 
 import { signUpAction } from "../actions";
 import { AuthForm } from "@/components/auth/auth-form";
-import { Field, GoogleButton } from "@/components/auth/field";
+import { Field } from "@/components/auth/field";
+import { OAuthButtons } from "@/components/auth/oauth-buttons";
 
 export default async function SignUpPage() {
   const common = await getTranslations("auth.signIn");
@@ -32,7 +33,7 @@ export default async function SignUpPage() {
           autoComplete="new-password"
         />
       </AuthForm>
-      <GoogleButton label={common("googleButton")} />
+      <OAuthButtons googleLabel={common("googleButton")} githubLabel={common("githubButton")} />
       <Link href="/sign-in" className="text-sm">
         {t("haveAccount")}
       </Link>
