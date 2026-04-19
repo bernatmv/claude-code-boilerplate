@@ -5,6 +5,7 @@ import { signUpAction } from "../actions";
 import { AuthForm } from "@/components/auth/auth-form";
 import { Field } from "@/components/auth/field";
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
+import { PasswordStrengthField } from "@/components/auth/password-strength-meter";
 
 export default async function SignUpPage() {
   const common = await getTranslations("auth.signIn");
@@ -18,13 +19,7 @@ export default async function SignUpPage() {
         successMessage="Check your email to confirm your account."
       >
         <Field label={common("email")} name="email" type="email" required />
-        <Field
-          label={common("password")}
-          name="password"
-          type="password"
-          required
-          autoComplete="new-password"
-        />
+        <PasswordStrengthField label={common("password")} name="password" />
         <Field
           label={t("confirmPassword")}
           name="confirmPassword"
