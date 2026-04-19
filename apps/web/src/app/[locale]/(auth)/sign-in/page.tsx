@@ -3,7 +3,8 @@ import { getTranslations } from "next-intl/server";
 
 import { signInAction } from "../actions";
 import { AuthForm } from "@/components/auth/auth-form";
-import { Field, GoogleButton } from "@/components/auth/field";
+import { Field } from "@/components/auth/field";
+import { OAuthButtons } from "@/components/auth/oauth-buttons";
 
 export default async function SignInPage() {
   const t = await getTranslations("auth.signIn");
@@ -20,7 +21,7 @@ export default async function SignInPage() {
           autoComplete="current-password"
         />
       </AuthForm>
-      <GoogleButton label={t("googleButton")} />
+      <OAuthButtons googleLabel={t("googleButton")} githubLabel={t("githubButton")} />
       <div className="flex justify-between text-sm">
         <Link href="/forgot-password">{t("forgotPassword")}</Link>
         <Link href="/sign-up">{t("noAccount")}</Link>
