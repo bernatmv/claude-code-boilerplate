@@ -2,6 +2,7 @@ import createIntlMiddleware from "next-intl/middleware";
 import { NextResponse, type NextRequest } from "next/server";
 
 import { routing } from "./navigation";
+import { REQUEST_ID_HEADER, getOrGenerateRequestId } from "./lib/request-id";
 import { updateSession } from "./lib/supabase/middleware";
 
 const intl = createIntlMiddleware(routing);
@@ -9,6 +10,8 @@ const MAINTENANCE_PATH = "/maintenance";
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const requestId = getOrGenerateRequestId(request.headers);
+  request.headers.set(REQUEST_ID_HEADER, requestId);
 
   if (
     process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true" &&
@@ -16,7 +19,9 @@ export default async function middleware(request: NextRequest) {
     !pathname.startsWith("/_next") &&
     !pathname.startsWith("/api")
   ) {
-    return NextResponse.rewrite(new URL(MAINTENANCE_PATH, request.url));
+    const res = NextResponse.rewrite(new URL(MAINTENANCE_PATH, request.url));
+    res.headers.set(REQUEST_ID_HEADER, requestId);
+    return res;
   }
 
   const intlResponse = intl(request);
@@ -24,6 +29,7 @@ export default async function middleware(request: NextRequest) {
   for (const cookie of authResponse.cookies.getAll()) {
     intlResponse.cookies.set(cookie.name, cookie.value);
   }
+  intlResponse.headers.set(REQUEST_ID_HEADER, requestId);
   return intlResponse;
 }
 
