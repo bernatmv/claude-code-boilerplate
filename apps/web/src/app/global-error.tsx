@@ -11,7 +11,6 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     if (typeof window !== "undefined") {
-       
       console.error("global-error", error);
     }
   }, [error]);
